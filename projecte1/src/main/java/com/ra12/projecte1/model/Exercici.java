@@ -1,8 +1,8 @@
 package com.ra12.projecte1.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
-public class Exercicis {
+public class Exercici {
     private int nivell;
     private String tipus;
     private int durada ;
@@ -11,6 +11,7 @@ public class Exercicis {
     private Timestamp ultimAcces;
     private Timestamp dataCreated;
     private Timestamp dataUpdated;
+    
     public int getNivell() {
         return nivell;
     }
@@ -59,7 +60,7 @@ public class Exercicis {
     public void setDataUpdated(Timestamp dataUpdated) {
         this.dataUpdated = dataUpdated;
     }
-    public Exercicis(int nivell, String tipus, int durada, String material, String imagen, Timestamp ultimAcces,
+    public Exercici(int nivell, String tipus, int durada, String material, String imagen, Timestamp ultimAcces,
             Timestamp dataCreated, Timestamp dataUpdated) {
         this.nivell = nivell;
         this.tipus = tipus;
@@ -77,5 +78,8 @@ public class Exercicis {
                 + ", imagen=" + imagen + ", ultimAcces=" + ultimAcces + ", dataCreated=" + dataCreated
                 + ", dataUpdated=" + dataUpdated + "]";
     }
+    public Exercici() {
+    }
+ 
   
 }
