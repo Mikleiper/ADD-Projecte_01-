@@ -3,6 +3,7 @@ package com.ra12.projecte1.model;
 import java.sql.Timestamp;
 
 public class Exercici {
+    private long id;
     private int nivell;
     private String tipus;
     private int durada ;
@@ -12,6 +13,12 @@ public class Exercici {
     private Timestamp dataCreated;
     private Timestamp dataUpdated;
     
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public int getNivell() {
         return nivell;
     }
