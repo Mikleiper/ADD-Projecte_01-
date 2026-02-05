@@ -31,8 +31,14 @@ public class ExerciciController {
     //Endpoint per pujar imatge
     @PostMapping("/exercicis/{id}/imatge")
     public ResponseEntity<String> uploadExerciciImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
-        String[] resposta = userService.saveExerciciImage(id, imageFile);
-        return (resposta[0].equals("ok")) ? ResponseEntity.status(HttpStatus.OK).body(resposta[1]) : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resposta[1]);
+        int resposta = userService.saveExerciciImage(id, imageFile);
+        if(resposta == 1){
+            return ResponseEntity.status(HttpStatus.OK).body("Imatge pujada correctament.");
+        } else if(resposta == 2){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la imatge a la base de dades.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Exercici amb id " + id + " no existeix.");
+        }
     }
 
     // Endpoint per actualitzar un exercici pel seu ID.
