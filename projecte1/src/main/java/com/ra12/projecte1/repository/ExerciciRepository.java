@@ -1,6 +1,7 @@
 package com.ra12.projecte1.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +36,8 @@ public class ExerciciRepository {
     }
 
     public int updateImagePath(Long id, String imagePath) {
-        String sql = "UPDATE exercicis SET imagen = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, imagePath, id);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String sql = "UPDATE exercici SET imagen = ?, dataUpdated = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, imagePath, now, id);
     }
 }

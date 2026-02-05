@@ -2,7 +2,15 @@ package com.ra12.projecte1.model;
 
 import java.sql.Timestamp;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class Exercici {
+
+    @Id
+    @GeneratedValue
     private long id;
     private int nivell;
     private String tipus;
@@ -67,6 +75,10 @@ public class Exercici {
     public void setDataUpdated(Timestamp dataUpdated) {
         this.dataUpdated = dataUpdated;
     }
+
+    public Exercici() {
+    }
+
     public Exercici(int nivell, String tipus, int durada, String material, String imagen, Timestamp ultimAcces,
             Timestamp dataCreated, Timestamp dataUpdated) {
         this.nivell = nivell;
@@ -85,8 +97,5 @@ public class Exercici {
                 + ", imagen=" + imagen + ", ultimAcces=" + ultimAcces + ", dataCreated=" + dataCreated
                 + ", dataUpdated=" + dataUpdated + "]";
     }
-    public Exercici() {
-    }
- 
-  
+    
 }
