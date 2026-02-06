@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.javapoet.LordOfTheStrings.ReturnBuilderSupport;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -68,6 +69,12 @@ public class ExerciciRepository {
     public int deleteAll() {
         String sql = "DELETE FROM exercici";
         return jdbcTemplate.update(sql);
+    }
+
+    // Crear nou registre 
+    public int crearExercici(Exercici exercici){
+        String sql = "INSERT INTO exercici (nivell,tipus,durada,material,dataCreated,ultimAcces)VALUES(?,?,?,?,NOW(),NOW()";
+        return jdbcTemplate.update(sql,exercici.getNivell(),exercici.getTipus(),exercici.getDurada(),exercici.getMaterial(),exercici.getDataCreated(),exercici.getUltimAcces());
     }
 
 }

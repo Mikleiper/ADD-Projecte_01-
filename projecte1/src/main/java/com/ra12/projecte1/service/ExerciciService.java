@@ -115,4 +115,20 @@ public class ExerciciService {
             return 0;
         }
     }
+
+    public int addExercici(Exercici exercici){
+        customLogging.info("UserService", "addExercici", "Intentant crear un nou exercici:");
+        try{
+            int resultat = exercicisRepository.crearExercici(exercici);
+         if (resultat == 0) {
+                customLogging.error(CLASS_NAME, " addExercici", "L'exercici no s'ha pogut crear a la base de dades.", null);
+            } else {
+                customLogging.info(CLASS_NAME, " addExercici", "Exercici creat correctament. ID/Files afectades: " + resultat);
+            }
+            return resultat;
+        } catch (Exception e) {
+            customLogging.error(CLASS_NAME, " addExercici", "Error en crear l'exercici: " + e.getMessage(), e);
+            return 0;
+        }
+    }
 }
