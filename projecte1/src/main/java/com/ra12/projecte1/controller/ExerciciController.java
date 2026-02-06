@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ra12.projecte1.dto.ExerciciRequestDTO;
 import com.ra12.projecte1.logging.CustomLogging;
+import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.service.ExerciciService;
 
 @RestController
@@ -63,6 +64,18 @@ public class ExerciciController {
     public ResponseEntity<String> deleteAllExercicis() {
         int allEsborrat =exerciciService.deleteAllExercicis();
         return (allEsborrat > 0)? ResponseEntity.status(HttpStatus.OK).body("Exercicis eliminats correctament.") : ResponseEntity.status(HttpStatus.OK).body("No s'ha esborrat res.");
+    }
+
+    // Endpoint para crear un exercici
+    @PostMapping("/exercicis")
+    public ResponseEntity<String> crearExercici (@RequestBody ExerciciRequestDTO exerciciRequestDTO) {
+       int resultat = exerciciService.addExercici(exerciciRequestDTO);
+       //Esta condición verifica si la inserción de los datos en la base de datos realmente tuvo éxito.
+       if (resultat > 0) {
+           return ResponseEntity.status(HttpStatus.CREATED).body("Exercici creat correctament");
+       } else {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear l'exercici");
+       }
     }
 
 }
