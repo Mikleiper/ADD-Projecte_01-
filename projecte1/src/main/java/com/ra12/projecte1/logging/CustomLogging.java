@@ -22,8 +22,9 @@ public class CustomLogging {
 
     //mètode intern per gestionar la creació del directori, nom del fitxer i contingut del log
     private void writeToFile(String msg){
-        String LOG_FILE = LOG_DIRECTORY + String.format("aplicacio-%s-%s-%s.log", LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth());
-        Path logPath = Paths.get(LOG_DIRECTORY + LOG_FILE);
+        LocalDateTime now = LocalDateTime.now();
+        String fileName = String.format("aplicacio-%s-%s-%s.log", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        Path logPath = Paths.get(LOG_DIRECTORY, fileName);
         try{ 
             if (logPath.getParent() != null && !Files.exists(logPath.getParent())) {
                 Files.createDirectories(logPath.getParent());            }          
