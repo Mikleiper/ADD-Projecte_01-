@@ -40,4 +40,23 @@ public class ExerciciRepository {
         String sql = "UPDATE exercici SET imagen = ?, dataUpdated = ? WHERE id = ?";
         return jdbcTemplate.update(sql, imagePath, now, id);
     }
+
+    // Actualitza totes les dades d’un exercici.
+    public int updateExercici(Exercici exercici, Long id) {
+        String sql = "UPDATE `exercici` SET nivell = ?, tipus = ?, durada = ?, material = ?, imagen = ?, dataUpdated = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, exercici.getNivell(), exercici.getTipus(), exercici.getDurada(), exercici.getMaterial(), exercici.getImagen(), new Timestamp(System.currentTimeMillis()), id);
+    }
+
+    // Elimina un usuari pel seu ID.
+    public int deleteById(Long id) {
+        String sql = "DELETE FROM exercici WHERE id = ?";
+        return jdbcTemplate.update(sql, id);
+    }
+
+    // Elimina tots els usuaris de la base de dades.
+    public int deleteAll() {
+        String sql = "DELETE FROM exercici";
+        return jdbcTemplate.update(sql);
+    }
+
 }
