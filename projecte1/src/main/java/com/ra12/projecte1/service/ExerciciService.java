@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ra12.projecte1.logging.CustomLogging;
 import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.repository.ExerciciRepository;
 
@@ -32,7 +33,7 @@ public class ExerciciService {
 
     public int saveExerciciImage(Long id, MultipartFile imageFile) throws IOException{
         customLogging.info(CLASS_NAME, "uploadImage", "Afegint la imatge" + imageFile.getOriginalFilename() + "de l'exercici amb id: " + id);
-        Exercici exercici = exercicisRepository.findOne(id);    //----------------------------CANVIAR POR METODO D OMAR D GET X ID    
+        Exercici exercici = exercicisRepository.findOne(id);    //------------CANVIAR POR METODO D OMAR D GET X ID    
         if(exercici != null){
             Path novaCarpeta = Paths.get("uploads/images");  //CREEM NOVA CARPETA //.get és = a new File en NIO2
             if (Files.notExists(novaCarpeta)) {   //si no existeix la carpeta
@@ -47,7 +48,7 @@ public class ExerciciService {
                 Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
             }
             
-            String relativePath = "/images/" + fileName;  // NO guardem la ruta absoluta del sistema d'arxius-això és quan guardem físicament l'arxiu en un discdur, SÍ guardem la ruta relativa per la BBDD
+            String relativePath = "/images/" + uniqueFileName;  // NO guardem la ruta absoluta del sistema d'arxius-això és quan guardem físicament l'arxiu en un discdur, SÍ guardem la ruta relativa per la BBDD
             try {
                 exercicisRepository.updateImagePath(id, relativePath);
                 customLogging.info(CLASS_NAME, "uploadImage", "La imatge s'ha guardat correctament. El path és : " + relativePath);
@@ -60,5 +61,38 @@ public class ExerciciService {
             customLogging.error(CLASS_NAME, "uploadImage", "l'Exercici amb id " + id +" no existeix", null);
             return 0;
         }
+    }
+
+    public int updateExercici(Long id, Exercici exercici) {
+        customLogging.info(CLASS_NAME, "updateExercici", "Modificant l'exercici amb id: " + exercici.getId());
+        int result = exercicisRepository.updateExercici(exercici, id);
+        if (result == 0) {
+            customLogging.error(CLASS_NAME, "updateExercici", "L'exercici amb id: " + exercici.getId() + " no existeix.", null);
+        } else {
+            customLogging.info(CLASS_NAME, "updateExercici", "Exercici modificat correctament.");
+        }
+        return result;
+    }
+
+    public int deleteExercici(Long id) {
+        customLogging.info(CLASS_NAME, "deleteExercici", "Borrant l'exercici amb id: " + id);
+        int resultat = exercicisRepository.deleteById(id);
+        if (resultat == 0) {
+            customLogging.error(CLASS_NAME, "deleteExercici", "L'exercici amb id: " + id + " no existeix.", null);
+        } else {
+            customLogging.info(CLASS_NAME, "deleteExercici", "L'exercici amb id: " + id + " s'ha borrat correctament.");
+        }
+        return resultat;
+    }
+
+    public int deleteAllExercicis() {
+        customLogging.info(CLASS_NAME, "deleteAllExercicis", "Borrant tots els exercicis de la base de dades.");
+        int resultat = exercicisRepository.deleteAll();
+        if (resultat == 0) {
+            customLogging.error(CLASS_NAME, "deleteAllExercicis", "No hi ha exercicis a la base de dades per borrar.", null);
+        } else {
+            customLogging.info(CLASS_NAME, "deleteAllExercicis", "Tots els exercicis s'han borrat correctament. Total d'exercicis borrats: " + resultat);
+        }
+        return resultat;
     }
 }

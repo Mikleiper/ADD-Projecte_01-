@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ra12.projecte1.logging.CustomLogging;
 import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.service.ExerciciService;
 
