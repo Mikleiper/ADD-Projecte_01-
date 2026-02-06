@@ -67,10 +67,15 @@ public class ExerciciController {
     }
 
     // Endpoint para crear un exercici
-    @PostMapping("/exercici")
-    public ResponseEntity<String> crearExercici (@RequestBody Exercici exercici) {
-       exerciciService.addExercici(exercici);
-        return ResponseEntity.ok("Exercici Creado correctamente");
+    @PostMapping("/exercicis")
+    public ResponseEntity<String> crearExercici (@RequestBody ExerciciRequestDTO exerciciRequestDTO) {
+       int resultat = exerciciService.addExercici(exerciciRequestDTO);
+       //Esta condición verifica si la inserción de los datos en la base de datos realmente tuvo éxito.
+       if (resultat > 0) {
+           return ResponseEntity.status(HttpStatus.CREATED).body("Exercici creat correctament");
+       } else {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear l'exercici");
+       }
     }
 
 }

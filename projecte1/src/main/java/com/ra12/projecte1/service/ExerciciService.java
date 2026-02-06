@@ -116,9 +116,10 @@ public class ExerciciService {
         }
     }
 
-    public int addExercici(Exercici exercici){
-        customLogging.info("UserService", "addExercici", "Intentant crear un nou exercici:");
+    public int addExercici(ExerciciRequestDTO exerciciRequestDTO){
+        customLogging.info(CLASS_NAME, "addExercici", "Intentant crear un nou exercici:");
         try{
+            Exercici exercici = mapper.convertValue(exerciciRequestDTO, Exercici.class);
             int resultat = exercicisRepository.crearExercici(exercici);
          if (resultat == 0) {
                 customLogging.error(CLASS_NAME, " addExercici", "L'exercici no s'ha pogut crear a la base de dades.", null);

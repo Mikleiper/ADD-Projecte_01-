@@ -73,8 +73,8 @@ public class ExerciciRepository {
 
     // Crear nou registre 
     public int crearExercici(Exercici exercici){
-        String sql = "INSERT INTO exercici (nivell,tipus,durada,material,dataCreated,ultimAcces)VALUES(?,?,?,?,NOW(),NOW()";
-        return jdbcTemplate.update(sql,exercici.getNivell(),exercici.getTipus(),exercici.getDurada(),exercici.getMaterial(),exercici.getDataCreated(),exercici.getUltimAcces());
+        String sql = "INSERT INTO exercici (nivell,tipus,durada,material,dataCreated,ultimAcces) VALUES (?,?,?,?,NOW(),NOW())";
+        return jdbcTemplate.update(sql, exercici.getNivell(), exercici.getTipus(), exercici.getDurada(), exercici.getMaterial());
     }
 
 }
