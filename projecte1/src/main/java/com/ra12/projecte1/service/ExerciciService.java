@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ra12.projecte1.logging.CustomLogging;
+import com.ra12.projecte1.dto.ExerciciRequestDTO;
 import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.repository.ExerciciRepository;
 
@@ -63,11 +64,12 @@ public class ExerciciService {
         }
     }
 
-    public int updateExercici(Long id, Exercici exercici) {
-        customLogging.info(CLASS_NAME, "updateExercici", "Modificant l'exercici amb id: " + exercici.getId());
+    public int updateExercici(Long id, ExerciciRequestDTO exerciciRequestDTO) {
+        Exercici exercici = exerciciRequestDTO.toExercici();
+        customLogging.info(CLASS_NAME, "updateExercici", "Modificant l'exercici amb id: " + id);
         int result = exercicisRepository.updateExercici(exercici, id);
         if (result == 0) {
-            customLogging.error(CLASS_NAME, "updateExercici", "L'exercici amb id: " + exercici.getId() + " no existeix.", null);
+            customLogging.error(CLASS_NAME, "updateExercici", "L'exercici amb id: " + id + " no existeix.", null);
         } else {
             customLogging.info(CLASS_NAME, "updateExercici", "Exercici modificat correctament.");
         }

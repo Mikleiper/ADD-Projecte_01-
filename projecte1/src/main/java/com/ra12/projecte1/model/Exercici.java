@@ -79,13 +79,12 @@ public class Exercici {
     public Exercici() {
     }
 
-    public Exercici(int nivell, String tipus, int durada, String material, String imagen, Timestamp ultimAcces,
+    public Exercici(int nivell, String tipus, int durada, String material, Timestamp ultimAcces,
             Timestamp dataCreated, Timestamp dataUpdated) {
         this.nivell = nivell;
         this.tipus = tipus;
         this.durada = durada;
         this.material = material;
-        this.imagen = imagen;
         this.ultimAcces = ultimAcces;
         this.dataCreated = dataCreated;
         this.dataUpdated = dataUpdated;
@@ -94,7 +93,7 @@ public class Exercici {
     @Override
     public String toString() {
         return "Exercicis [nivell=" + nivell + ", tipus=" + tipus + ", durada=" + durada + ", material=" + material
-                + ", imagen=" + imagen + ", ultimAcces=" + ultimAcces + ", dataCreated=" + dataCreated
+                + ", ultimAcces=" + ultimAcces + ", dataCreated=" + dataCreated
                 + ", dataUpdated=" + dataUpdated + "]";
     }
     
