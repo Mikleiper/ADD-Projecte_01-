@@ -2,8 +2,6 @@ package com.ra12.projecte1.dto;
 
 import java.sql.Timestamp;
 
-import com.ra12.projecte1.model.Exercici;
-
 public class ExerciciRequestDTO {
 
     private int nivell;
@@ -11,17 +9,19 @@ public class ExerciciRequestDTO {
     private int durada;
     private String material;
     private Timestamp ultimAcces;
+    private Timestamp dataUpdated;
 
     //construcot buit per a q Spring pugui rebre JSON i convertir-ho a objecte
     public ExerciciRequestDTO() {
     }
 
-    public ExerciciRequestDTO(int nivell, String tipus, int durada, String material, Timestamp ultimAcces) {
+    public ExerciciRequestDTO(int nivell, String tipus, int durada, String material, Timestamp ultimAcces, Timestamp dataUpdated) {
         this.nivell = nivell;
         this.tipus = tipus;
         this.durada = durada;
         this.material = material;
         this.ultimAcces = ultimAcces;
+        this.dataUpdated = dataUpdated;    
     }
 
     public int getNivell() {
@@ -55,8 +55,20 @@ public class ExerciciRequestDTO {
     public void setMaterial(String material) {
         this.material = material;
     }
-    
-    public Exercici toExercici(){
-        return new Exercici(nivell, tipus, durada, material, ultimAcces, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+
+    public Timestamp getUltimAcces() {
+        return ultimAcces;
+    }
+
+    public void setUltimAcces(Timestamp ultimAcces) {
+        this.ultimAcces = ultimAcces;
+    }
+
+    public Timestamp getDataUpdated() {
+        return dataUpdated;
+    }
+
+    public void setDataUpdated(Timestamp dataUpdated) {
+        this.dataUpdated = dataUpdated;
     }
 }

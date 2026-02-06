@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,12 +27,22 @@ public class ExerciciRepository {
             exercici.setNivell(rs.getInt("nivell"));
             exercici.setTipus(rs.getString("tipus"));
             exercici.setDurada(rs.getInt("durada"));
-            exercici.setMaterial(rs.getString("materia"));
+            exercici.setMaterial(rs.getString("material"));
             exercici.setImagen(rs.getString("imagen"));
-            exercici.setUltimAcces(rs.getTimestamp("ultimAcess"));
+            exercici.setUltimAcces(rs.getTimestamp("ultimAcces"));
             exercici.setDataCreated(rs.getTimestamp("dataCreated"));
-            exercici.setDataUpdated(rs.getTimestamp("dataUpate"));
+            exercici.setDataUpdated(rs.getTimestamp("dataUpdated"));
             return exercici;
+        }
+    }
+
+    // Mètode per recuperar un exercici per ID
+    public Exercici findById(Long id) {
+        try {
+            String sql = "SELECT * FROM exercici WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, new ExerciciRowMap(), id);
+        } catch (EmptyResultDataAccessException e) { // Capturem especificament aqust tipus d'error per indicar q no troba un registre
+            return null;
         }
     }
 

@@ -42,7 +42,9 @@ public class ExerciciController {
         }
     }
 
-    // Endpoint per actualitzar un exercici pel seu ID.
+    /* Endpoint per actualitzar un exercici pel seu ID.
+       1.controller rep JSON i le converteix a DTORequest
+       2.li pasa a service*/
     @PutMapping("/exercicis/{id}")
     public ResponseEntity<String> updateExercici(@PathVariable Long id, @RequestBody ExerciciRequestDTO exerciciRequestDTO ) { 
         int actulitzat = exerciciService.updateExercici(id, exerciciRequestDTO);
@@ -53,14 +55,14 @@ public class ExerciciController {
     @DeleteMapping("/exercicis/{id}")
     public ResponseEntity<String> deleteExercici(@PathVariable Long id) {
         int esborrat = exerciciService.deleteExercici(id);
-        return (esborrat > 0)? ResponseEntity.status(HttpStatus.OK).body("Exercici amb id=" + id + " eliminat correctament de la base de dades.") : ResponseEntity.status(HttpStatus.OK).body("No s'ha esborrat res, l'exercici cercat no existeix");
+        return (esborrat > 0)? ResponseEntity.status(HttpStatus.OK).body("Exercici amb id=" + id + " eliminat correctament de la base de dades.") : ResponseEntity.status(HttpStatus.OK).body("No s'ha esborrat res.");
     }
 
     // Endpoint per eliminar tots els exercicis de la base de dades.
     @DeleteMapping("/exercicis")
     public ResponseEntity<String> deleteAllExercicis() {
         int allEsborrat =exerciciService.deleteAllExercicis();
-        return (allEsborrat > 0)? ResponseEntity.status(HttpStatus.OK).body("Exercicis eliminats correctament.") : ResponseEntity.status(HttpStatus.OK).body("No s'ha esborrat res, no hi ha exercicis a la base de dades");
+        return (allEsborrat > 0)? ResponseEntity.status(HttpStatus.OK).body("Exercicis eliminats correctament.") : ResponseEntity.status(HttpStatus.OK).body("No s'ha esborrat res.");
     }
 
 }
