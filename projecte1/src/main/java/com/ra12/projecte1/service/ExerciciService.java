@@ -1,7 +1,9 @@
 package com.ra12.projecte1.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,7 +119,7 @@ public class ExerciciService {
     }
 
     public int addExercici(ExerciciRequestDTO exerciciRequestDTO){
-        customLogging.info(CLASS_NAME, "addExercici", "Intentant crear un nou exercici:");
+        customLogging.info(CLASS_NAME, "addExercici", "Intentant crear un nou exercici: ");
         try{
             Exercici exercici = mapper.convertValue(exerciciRequestDTO, Exercici.class);
             int resultat = exercicisRepository.crearExercici(exercici);
@@ -132,4 +134,57 @@ public class ExerciciService {
             return 0;
         }
     }
-}
+    public int saveExerciciCSV(MultipartFile file) {
+        int comptador = 0;
+        customLogging.info("ExerciciServices", "saveExerciciCSV"," afegir informació a la taula a través de csv:" + file.getName());
+
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+            String linia;
+            int numLinies = 0;
+            while((linia = br.readLine()) != null){
+                numLinies ++;
+                if(numLinies == 1) continue;
+                if(linia.trim().isEmpty()) continue;
+                String[] camps = linia.split(",");
+                if(camps.length < 4) continue;
+                int nivell = Integer.parseInt(camps[0].trim());
+                String tipus = camps[1].trim();
+                int durada = Integer.parseInt(camps[2].trim());
+                String material = camps[3].trim();
+                
+                // Creem un nou DTO amb les dades del CSV
+                ExerciciRequestDTO csvDto = new ExerciciRequestDTO(nivell, tipus, durada, material);
+                Exercici exercici = mapper.convertValue(csvDto, Exercici.class);
+                try{
+                    exercicisRepository.crearExercici(exercici);
+                    comptador ++;
+                }catch(Exception e){
+                    customLogging.error("ExerciciServices", "saveExerciciCSV","Error on line " +linia,e);
+                }
+            }
+            Path csvFolder = Paths.get("src/main/resources/private/csv_processed");
+            if (!Files.exists(csvFolder)) {
+                try {
+                    Files.createDirectories(csvFolder);
+                } catch (Exception e) {
+                    customLogging.error("ExerciciServices", "saveExercici", "no s'ha pogut crear el csv", e);
+                }
+            } // Tanquem el IF aquí, abans de guardar el fitxer
+
+            String originalFileName = file.getOriginalFilename();
+            Path filePath = csvFolder.resolve(originalFileName);
+            try{
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            }catch (Exception e){
+                customLogging.error("ExerciciServices", "saveExercici", "no s'ha pogut guardar el arxiu csv", e);
+            }
+            
+        } catch(IOException e){ // Tanquem el TRY aquí
+                customLogging.error("ExerciciServices", "saveExercici", "no s'ha pogut llegir el arxiu csv", e);
+        }
+        customLogging.info("ExerciciServices", "saveExercici", "" );
+        return comptador;
+        
+    
+        }
+    }

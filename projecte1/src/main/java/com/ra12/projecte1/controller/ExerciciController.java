@@ -78,4 +78,15 @@ public class ExerciciController {
        }
     }
 
+    // Endpoint per pujar un fitxer CSV 
+    @PostMapping("/exercicis/csv")
+    public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
+        int resultat = exerciciService.saveExerciciCSV(file);
+        if (resultat > 0) {
+            return ResponseEntity.ok("S'han processat " + resultat + " registres del CSV correctament.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al processar el CSV o fitxer buit.");
+        }
+    }
+
 }
