@@ -2,10 +2,12 @@ package com.ra12.projecte1.controller;
 
 import java.io.IOException;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ra12.projecte1.dto.ExerciciRequestDTO;
-import com.ra12.projecte1.logging.CustomLogging;
+import com.ra12.projecte1.dto.ExerciciResponseDTO;
 import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.service.ExerciciService;
 
@@ -26,9 +28,6 @@ public class ExerciciController {
 
     @Autowired
     private ExerciciService exerciciService;
-
-    @Autowired
-    private CustomLogging customLogging;
 
     //Endpoint per pujar imatge
     @PostMapping("/exercicis/{id}/imatge")
@@ -77,5 +76,36 @@ public class ExerciciController {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear l'exercici");
        }
     }
+
+    // Endpoint per pujar un fitxer CSV 
+    @PostMapping("/exercicis/csv")
+    public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
+        int resultat = exerciciService.saveExerciciCSV(file);
+        if (resultat > 0) {
+            return ResponseEntity.ok("S'han processat " + resultat + " registres del CSV correctament.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al processar el CSV o fitxer buit.");
+        }
+    }
+    // Endpoint per llegir un exercici per ID
+    @GetMapping("/exercicis/{id}")
+    public ResponseEntity<ExerciciResponseDTO> readPerId(@PathVariable Long id){
+        ExerciciResponseDTO exercici = exerciciService.readPerId(id);
+        if(exercici == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(exercici);
+    }
+    @GetMapping("/exercicis")
+    public ResponseEntity<List<Exercici>> readAll() {
+        List<Exercici> exercici = exerciciService.readAll();
+        if (exercici == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(exercici);
+        
+    }
+    
+    
 
 }
