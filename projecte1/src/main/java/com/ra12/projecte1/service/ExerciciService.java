@@ -8,12 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ra12.projecte1.dto.ExerciciRequestDTO;
+import com.ra12.projecte1.dto.ExerciciResponseDTO;
 import com.ra12.projecte1.logging.CustomLogging;
 import com.ra12.projecte1.model.Exercici;
 import com.ra12.projecte1.repository.ExerciciRepository;
@@ -184,7 +186,31 @@ public class ExerciciService {
         }
         customLogging.info("ExerciciServices", "saveExercici", "" );
         return comptador;
-        
-    
+        }
+        public ExerciciResponseDTO readPerId(Long id){
+            customLogging.info("ExerciciServices", "readPerId", "llegir registre per id");
+            try{
+                Exercici exercici = exercicisRepository.findById(id);
+                if(exercici == null){
+                customLogging.error("ExerciciServices", "readPerId", "usuari amb id " + id + " no existeix", null);
+                return null;
+                }
+                ExerciciResponseDTO responseDTO = mapper.convertValue(exercici, ExerciciResponseDTO.class);
+                return responseDTO;
+               
+            }catch(Exception e){
+                customLogging.error("ExerciciServices", "readPerId", "no s'ha pogut llegir el  registre per id ", e);
+                throw e;
+            }
+        }
+        public List<Exercici> readAll(){
+            customLogging.info("ExerciciServices", "readPerId", "llegir tots els registres");
+            try{
+                List<Exercici> exercici = exercicisRepository.findAll();
+                return exercici;
+            } catch (Exception e) {
+                customLogging.error("ExerciciServices", "readAll", "no s'ha pogut llegir els registres", e);
+                throw e;    
+            }
         }
     }
